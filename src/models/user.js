@@ -1,7 +1,5 @@
 "use strict"
-/* -------------------------------------------------------
-    NODEJS EXPRESS | CLARUSWAY FullStack Team
-------------------------------------------------------- */
+/* -------------------------------------------------------*/
 const { mongoose } = require('../configs/dbConnection')
 /* ------------------------------------------------------- *
 {
@@ -101,16 +99,16 @@ UserSchema.pre(['save', 'updateOne'], function (next) {
     // if process is updateOne, data will receive in "this._update"
     const data = this?._update || this
 
-    // email@domain.com
+    
     const isEmailValidated = data.email
-        ? /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email) // test from "data".
+        ? /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email) 
         : true
 
     if (isEmailValidated) {
 
         if (data?.password) {
 
-            // pass == (min 1: lowerCase, upperCase, Numeric, @$!%*?& + min 8 chars)
+            // pass == min 1 büyük, küçük, numara, özel karakterden oluşan 8 haneli
             const isPasswordValidated = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(data.password)
 
             if (isPasswordValidated) {
