@@ -93,13 +93,10 @@ const UserSchema = new mongoose.Schema({
 
 const passwordEncrypt = require('../helpers/passwordEncrypt')
 
-UserSchema.pre(['save', 'updateOne'], function (next) {
+UserSchema.pre(['save', 'updateOne'], function (next) {                             //---> kaydetmeden ve update etmeden hemen önceki aşamada yapılacaklar
 
-    // get data from "this" when create;
-    // if process is updateOne, data will receive in "this._update"
     const data = this?._update || this
 
-    
     const isEmailValidated = data.email
         ? /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email) 
         : true
@@ -108,13 +105,13 @@ UserSchema.pre(['save', 'updateOne'], function (next) {
 
         if (data?.password) {
 
-            // pass == min 1 büyük, küçük, numara, özel karakterden oluşan 8 haneli
+            // pass == min 1 büyük, küçük, numara veya özel karakterlerden oluşan && min 8 haneli
             const isPasswordValidated = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(data.password)
 
             if (isPasswordValidated) {
 
                 this.password = data.password = passwordEncrypt(data.password)
-                this._update = data // updateOne will wait data from "this._update".
+                this._update = data 
 
             } else {
 
@@ -129,10 +126,12 @@ UserSchema.pre(['save', 'updateOne'], function (next) {
         next(new Error('Email not validated.'))
     }
 })
+
+
 /* ------------------------------------------------------- */
 // FOR REACT PROJECT:
-UserSchema.pre('init', function (data) {
-
+UserSchema.pre('init', function (data) {                                  //---> Frontend senk.'lu gittiğim için oaraya uygun şekilde hazırlıyorum. Veriyi göndermeden,
+                                                                         //--->hemen önce id yazımını ve createdAt yazımını ve tarih formatını değiştir dedim...   
     data.id = data._id
     data.createds = data.createdAt.toLocaleDateString('tr-tr')
 })
