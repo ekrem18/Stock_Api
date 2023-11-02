@@ -1,7 +1,5 @@
 "use strict"
-/* -------------------------------------------------------
-    NODEJS EXPRESS | CLARUSWAY FullStack Team
-------------------------------------------------------- */
+/* ------------------------------------------------------- */
 // User Controller:
 
 const User = require('../models/user')
@@ -22,9 +20,9 @@ module.exports = {
             `
         */
 
-        const filters = (req.user?.is_superadmin) ? {} : { _id: req.user._id }
+        const filters = (req.user?.is_superadmin) ? {} : { _id: req.user._id }  
 
-        const data = await res.getModelList(User, filters)
+        const data = await res.getModelList(User, filters)  
 
         // res.status(200).send({
         //     error: false,
@@ -33,7 +31,7 @@ module.exports = {
         // })
         
         // FOR REACT PROJECT:
-        res.status(200).send(data)
+        res.status(200).send(data)                                      //---> veriyi doğrudan olduğu gibi göndermek için bu formata geçtim
     },
 
     create: async (req, res) => {
@@ -53,7 +51,7 @@ module.exports = {
             }
         */
 
-        // Disallow setting admin/staff:
+        // yeni kayıt oluşturulurken yetkilendirmede hata olmasın diye bu kısmı yapıyorum
         req.body.is_staff = false
         req.body.is_superadmin = false
 
@@ -101,7 +99,7 @@ module.exports = {
         const filters = (req.user?.is_superadmin) ? { _id: req.params.id } : { _id: req.user._id }
         req.body.is_superadmin = (req.user?.is_superadmin) ? req.body.is_superadmin : false
 
-        const data = await User.updateOne(filters, req.body, { runValidators: true })
+        const data = await User.updateOne(filters, req.body, { runValidators: true })   //--->modelde validate yapmadığım için bu metod update yaparken de çalışsın istiyorum
 
         res.status(202).send({
             error: false,
