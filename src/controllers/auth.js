@@ -48,9 +48,9 @@ module.exports = {
 
                     res.send({
                         error: false,
-                        // token: tokenData.token,
+                        // token: tokenData.token,                              //---> normalde böle yazıyorken,
                         // FOR REACT PROJECT:
-                        key: tokenData.token,
+                        key: tokenData.token,                                   //---> FE. senkronu ile gidildiğinden key prop.i ile kullanıyorum
                         user,
                     })
 
