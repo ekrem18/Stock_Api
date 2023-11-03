@@ -50,11 +50,11 @@ module.exports = {
         */
 
         // Disallow setting admin/staff:
-        req.body.is_staff = false
-        req.body.is_superadmin = false
+        req.body.is_staff = false                               //---> kendi kendine yetki veremesin
+        req.body.is_superadmin = false                          //--->
 
         // Auto add user_id to req.body:
-        req.body.user_id = req.user?._id
+        req.body.user_id = req.user?._id                        //---> user_id'yi ayrıca göndermek istemiyorum. body'e user_id'yi  req.user?._id'den koy
 
         const data = await Sale.create(req.body)
 
