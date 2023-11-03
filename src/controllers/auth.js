@@ -23,7 +23,7 @@ module.exports = {
             }
         */
 
-        const { username, email, password } = req.body                           //---> req.body içerisinden işlem yapabilmek için bunları alıyorum
+        const { username, email, password } = req.body                          //---> req.body içerisinden işlem yapabilmek için bunları alıyorum
 
         if ((username || email) && password) {
 
@@ -33,10 +33,10 @@ module.exports = {
 
                 if (user.is_active) {
 
-                    let tokenData = await Token.findOne({ user_id: user._id })
-                    if (!tokenData) tokenData = await Token.create({
-                        user_id: user._id,
-                        token: passwordEncrypt(user._id + Date.now())
+                    let tokenData = await Token.findOne({ user_id: user._id })  //---> user_id: user._id eşleşen user'ın token'ı var mı tokenData'ya ata
+                    if (!tokenData) tokenData = await Token.create({            //---> daha önceden bir token yoksa
+                        user_id: user._id,                                      //---> token oluşturacağın user._id bu user._id
+                        token: passwordEncrypt(user._id + Date.now())           
                     })
 
                     // Use UUID:
