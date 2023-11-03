@@ -2,13 +2,13 @@
 /* -------------------------------------------------------*/
 // Auth Controller:
 
-const User = require('../models/user')                          //---> her Controller bir model üzerine kurulu olduğu için auth cont'ı user modelini baz alıyor
+const User = require('../models/user')                                          //---> her Cont. bir modeli kullandığından Auth Cont'ı User modelini baz alıyor
 const Token = require('../models/token')
 const passwordEncrypt = require('../helpers/passwordEncrypt')
 
 module.exports = {
 
-    login: async (req, res) => {
+    login: async (req, res) => {                                                //---> token oluşturma kısmı diyebilirim
         /*
             #swagger.tags = ["Authentication"]
             #swagger.summary = "Login"
@@ -23,13 +23,13 @@ module.exports = {
             }
         */
 
-        const { username, email, password } = req.body
+        const { username, email, password } = req.body                           //---> req.body içerisinden işlem yapabilmek için bunları alıyorum
 
         if ((username || email) && password) {
 
-            const user = await User.findOne({ $or: [{ username }, { email }] })
+            const user = await User.findOne({ $or: [{ username }, { email }] }) //---> user tablosu içinde ara ( username VEYA email birini getir)
 
-            if (user && user.password == passwordEncrypt(password)) {
+            if (user && user.password == passwordEncrypt(password)) {           //---> kullanıcı geldi mi mu ve kullanıcının şifresi,  gelen şifreyle aynı mı? 
 
                 if (user.is_active) {
 
@@ -71,7 +71,7 @@ module.exports = {
         }
     },
 
-    logout: async (req, res) => {
+    logout: async (req, res) => {                                //---> token silme kısmı diyebilirim
         /*
             #swagger.tags = ["Authentication"]
             #swagger.summary = "Logout"
