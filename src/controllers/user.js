@@ -69,7 +69,7 @@ module.exports = {
             #swagger.summary = "Get Single User"
         */
 
-        const filters = (req.user?.is_superadmin) ? { _id: req.params.id } : { _id: req.user._id }
+        const filters = (req.user?.is_superadmin) ? { _id: req.params.id } : { _id: req.user._id } //---> superadmin'se herkesi okuyabilir. Ama değilse; URL'den id'yi değşitirip girme ihtimalini de ortadan kaldırmak için sadece user._id'le giriş yapabilsiin ve kendinni okuyabilisin diyorum
 
         const data = await User.findOne(filters)
 
