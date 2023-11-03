@@ -39,13 +39,6 @@ module.exports = {
                         token: passwordEncrypt(user._id + Date.now())           
                     })
 
-                    // Use UUID:
-                    // const { randomUUID } = require('node:crypto')
-                    // if (!tokenData) tokenData = await Token.create({
-                    //     user_id: user._id,
-                    //     token: randomUUID()
-                    // })
-
                     res.send({
                         error: false,
                         // token: tokenData.token,                              //---> normalde böle yazıyorken,
@@ -68,6 +61,76 @@ module.exports = {
 
             res.errorStatusCode = 401
             throw new Error('Please enter username/email and password.')
+        }
+    },
+
+    refresh: async (req, res) => {
+        /*
+            #swagger.tags = ['Authentication']
+            #swagger.summary = 'JWT: Refresh'
+            #swagger.description = 'Refresh accessToken with refreshToken'
+            #swagger.parameters['body'] = {
+                in: 'body',
+                required: true,
+                schema: {
+                    bearer: {
+                        refresh: '...refreshToken...'
+                    }
+                }
+            }
+        */
+
+        const refreshToken = req.body?.bearer?.refreshToken
+
+        if (refreshToken) {
+
+            jwt.verify(refreshToken, process.env.REFRESH_KEY, async function (err, userData) {
+
+                if (err) {
+
+                    res.errorStatusCode = 401
+                    throw err
+                } else {
+
+                    const { _id, password } = userData
+
+                    if (_id && password) {
+
+                        const user = await User.findOne({ _id })
+
+                        if (user && user.password == password) {
+
+                            if (user.is_active) {
+
+                                // JWT:
+                                const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_KEY, { expiresIn: '30m' })
+
+                                res.send({
+                                    error: false,
+                                    bearer: { accessToken }
+                                })
+
+                            } else {
+
+                                res.errorStatusCode = 401
+                                throw new Error('This account is not active.')
+                            }
+                        } else {
+
+                            res.errorStatusCode = 401
+                            throw new Error('Wrong id or password.')
+                        }
+                    } else {
+
+                        res.errorStatusCode = 401
+                        throw new Error('Please enter id and password.')
+                    }
+                }
+            })
+
+        } else {
+            res.errorStatusCode = 401
+            throw new Error('Please enter token.refresh')
         }
     },
 
