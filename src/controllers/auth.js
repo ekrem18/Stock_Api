@@ -71,24 +71,24 @@ module.exports = {
         }
     },
 
-    logout: async (req, res) => {                                //---> token silme kısmı diyebilirim
+    logout: async (req, res) => {                                               //---> token silme kısmı diyebilirim
         /*
             #swagger.tags = ["Authentication"]
             #swagger.summary = "Logout"
             #swagger.description = 'Delete token key.'
         */
 
-        const auth = req.headers?.authorization || null // Token ...tokenKey...
-        const tokenKey = auth ? auth.split(' ') : null // ['Token', '...tokenKey...']
+        const auth = req.headers?.authorization || null         // Token ...6s5d4gt56d4f6ghfdg...
+        const tokenKey = auth ? auth.split(' ') : null          // ['Token', '...6s5d4gt56d4f6ghfdg...']
 
         let result = {}
-        if (tokenKey && tokenKey[0] == 'Token') {
-            result = await Token.deleteOne({ token: tokenKey[1] })
+        if (tokenKey && tokenKey[0] == 'Token') {                               //---> tokenkey var mı ve 0.endeksi 'Token' mı ? öyleyse;
+            result = await Token.deleteOne({ token: tokenKey[1] })              //---> 1.endeksini yakala ve sil
         }
 
         res.send({
             error: false,
-            message: 'Logout was OK.',
+            message: 'Logout OK broo.',
             result
         })
     },
