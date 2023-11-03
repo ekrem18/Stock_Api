@@ -1,7 +1,5 @@
 "use strict"
-/* -------------------------------------------------------
-    NODEJS EXPRESS | CLARUSWAY FullStack Team
-------------------------------------------------------- */
+/* -------------------------------------------------------*/
 const { mongoose } = require('../configs/dbConnection')
 /* ------------------------------------------------------- *
 {
@@ -32,11 +30,7 @@ const ProductSchema = new mongoose.Schema({
         required: true
     },
 
-    // quantity: {
-    //     type: Number,
-    //     default: 0
-    // },
-    stock: {
+    stock: {                                //---> erd'de quantity olarak yazan bölüm
         type: Number,
         default: 0
     }
