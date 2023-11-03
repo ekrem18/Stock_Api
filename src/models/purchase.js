@@ -1,7 +1,5 @@
 "use strict"
-/* -------------------------------------------------------
-    NODEJS EXPRESS | CLARUSWAY FullStack Team
-------------------------------------------------------- */
+/* -------------------------------------------------------*/
 const { mongoose } = require('../configs/dbConnection')
 /* ------------------------------------------------------- *
 {
@@ -52,10 +50,10 @@ const PurchaseSchema = new mongoose.Schema({
 
     price_total: {
         type: Number,
-        default: function () { return this.price * this.quantity }, // for CREATE
-        transform: function () { return this.price * this.quantity }, // for UPDATE
-        // set: function () { return this.price * this.quantity } // for sendingData
-    }
+        default: function () { return this.price * this.quantity }, // for CREATE           react projesi için fieldname'leri db'de değiştirmeden yazabildim ancak,
+        transform: function () { return this.price * this.quantity }, // for UPDATE       buradaki bilgiler sabit olmamalı. property'lere func yazabilme imkanım var.
+        // set: function () { return this.price * this.quantity } // for sendingData      *Model içindeki Price ve MODEL içindeki QUANTITY 'yi çarp
+    }                                                                                   //Arrow func this kullanımına izin vermediği için normal func yazıyorum..  
 
 }, { collection: 'purchases', timestamps: true })
 
