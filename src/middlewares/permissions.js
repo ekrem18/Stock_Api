@@ -1,7 +1,5 @@
 "use strict"
-/* -------------------------------------------------------
-    NODEJS EXPRESS | CLARUSWAY FullStack Team
-------------------------------------------------------- */
+/* ------------------------------------------------------- */                      //authorization da diyebilirim yetkisi var mı yok mu baktığım yer
 // Middleware: permissions
 
 module.exports = {
@@ -19,7 +17,7 @@ module.exports = {
         } else {
 
             res.errorStatusCode = 403
-            throw new Error('NoPermission: You must login.')
+            throw new Error('No Permission: You must LOGIN.')
         }
     },
 
@@ -36,7 +34,7 @@ module.exports = {
         } else {
 
             res.errorStatusCode = 403
-            throw new Error('NoPermission: You must login and to be Admin.')
+            throw new Error('No Permission: You must LOGIN and be an ADMIN.')
         }
     },
 
@@ -53,7 +51,7 @@ module.exports = {
         } else {
 
             res.errorStatusCode = 403
-            throw new Error('NoPermission: You must login and to be Staff.')
+            throw new Error('No Permission: You must LOGIN and be a STAFF.')
         }
     },
 }

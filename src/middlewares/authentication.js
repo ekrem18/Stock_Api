@@ -1,5 +1,5 @@
 "use strict"
-/* -------------------------------------------------------*/
+/* -------------------------------------------------------*///kimlik kontrolünü yaptığım yer var mı yok mu, izin işine bakmıyorum
 // app.use(authentication):
 
 const Token = require('../models/token')
