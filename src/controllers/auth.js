@@ -1,10 +1,8 @@
 "use strict"
-/* -------------------------------------------------------
-    NODEJS EXPRESS | CLARUSWAY FullStack Team
-------------------------------------------------------- */
+/* -------------------------------------------------------*/
 // Auth Controller:
 
-const User = require('../models/user')
+const User = require('../models/user')                          //---> her Controller bir model üzerine kurulu olduğu için auth cont'ı user modelini baz alıyor
 const Token = require('../models/token')
 const passwordEncrypt = require('../helpers/passwordEncrypt')
 
