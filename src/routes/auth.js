@@ -1,4 +1,15 @@
 "use strict"
+/*
+route denemesi; refresh token gönderip access almak için
+post metodu ile  /auth/refresh
+
+{
+    "bearer": { 
+        "refreshToken": "-------------Token'ın kendisi------------------"
+    }
+}
+
+*/ 
 /* -------------------------------------------------------*/
 const router = require('express').Router()
 /* ------------------------------------------------------- */
