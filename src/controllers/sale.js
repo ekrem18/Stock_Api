@@ -101,8 +101,9 @@ module.exports = {
             const currentSale = await Sale.findOne({ _id: req.params.id })
             // farka ulaşıyorum:
             const quantity = req.body.quantity - currentSale.quantity
-            //Filtreleme alanımda ikinci parametre-koşul olarak, stok büyük veya eşittir "gte" diyorum        öyleyse    bu işlemi yap👇
+            //Filtreleme alanımda ikinci parametre-koşul olarak 2.yi de ekliyorum, stok büyük veya eşittir "gte" diyorum ,, öyleyse bu işlemi yap👇
             const updateProduct = await Product.updateOne({ _id: currentSale.product_id, stock: { $gte: quantity } }, { $inc: { stock: -quantity } })
+            //.... id'yi stock >= quantity ye getir dediğim için otomatik olarak stok doğrulaması da yapmış oldum
             // console.log(updateProduct)
             
             // stok yeterli değilse:
