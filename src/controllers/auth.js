@@ -13,7 +13,7 @@ module.exports = {
         /*
             #swagger.tags = ["Authentication"]
             #swagger.summary = "Login"
-            #swagger.description = 'Login with username (or email) and password.'
+            #swagger.description = 'Login with username (or email) and password. You can use simpleToken or JWT'
             #swagger.parameters["body"] = {
                 in: "body",
                 required: true,
@@ -144,21 +144,31 @@ module.exports = {
     logout: async (req, res) => {                                               //---> token silme kısmı diyebilirim
         /*
             #swagger.tags = ["Authentication"]
-            #swagger.summary = "Logout"
+            #swagger.summary = "simpleToken: Logout"
             #swagger.description = 'Delete token key.'
         */
+ 
+        const auth = req.headers?.authorization || null         // Token ...6s5d4gt56d4f6ghfdg...          // Bearer ...accessToken...  
+        const tokenKey = auth ? auth.split(' ') : null          // ['Token', '...6s5d4gt56d4f6ghfdg...']   // ['Bearer', '...accessToken...']    
 
-        const auth = req.headers?.authorization || null         // Token ...6s5d4gt56d4f6ghfdg...
-        const tokenKey = auth ? auth.split(' ') : null          // ['Token', '...6s5d4gt56d4f6ghfdg...']
+        let message = null, result = {}
 
-        let result = {}
-        if (tokenKey && tokenKey[0] == 'Token') {                               //---> tokenkey var mı ve 0.endeksi 'Token' mı ? öyleyse;
-            result = await Token.deleteOne({ token: tokenKey[1] })              //---> 1.endeksini yakala ve sil
+        if (tokenKey) {                                                         //---> tokenkey var mı ve 0.endeksi 'Token' mı ? öyleyse;
+
+            if (tokenKey[0] == 'Token') { // SimpleToken
+
+                result = await Token.deleteOne({ token: tokenKey[1] })          //---> Token gelirse zaten siliyoruz. JWT gelirse işlem yapmaya gerek kalmıyor
+                message = 'Token deleted. Logout OK.'
+
+            } else { // JWT
+
+                message = 'No need any process for logout. You must delete JWT tokens.'
+            }
         }
 
         res.send({
             error: false,
-            message: 'Logout OK broo.',
+            message,
             result
         })
     },
