@@ -103,11 +103,12 @@ module.exports = {
             const quantity = req.body.quantity - currentSale.quantity
             //Filtreleme alanımda ikinci parametre-koşul olarak 2.yi de ekliyorum, stok büyük veya eşittir "gte" diyorum ,, öyleyse bu işlemi yap👇
             const updateProduct = await Product.updateOne({ _id: currentSale.product_id, stock: { $gte: quantity } }, { $inc: { stock: -quantity } })
-            //.... id'yi stock >= quantity ye getir dediğim için otomatik olarak stok doğrulaması da yapmış oldum
+            //.... id'yi stock >= quantity ye getir dediğim için otomatik olarak stok doğrulaması da yapmış oldum👆
+            
             // console.log(updateProduct)
             
             // stok yeterli değilse:
-            if (updateProduct.modifiedCount == 0) { // Check Limit
+            if (updateProduct.modifiedCount == 0) { // Check Limit ,, modifedCount versini yukarıda ckg içeriisnden aldım. mevcut bir bilgi..
                 res.errorStatusCode = 422
                 throw new Error('There is not enough stock for this sale.')
             }
