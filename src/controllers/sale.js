@@ -2,7 +2,7 @@
 /* ------------------------------------------------------*/
 // Sale Controller:
 
-const Product = require('../models/product')
+const Product = require('../models/product')                                        //---> çekmeyi unutma zira yapacağın işlem product ile içli dışlı
 const Sale = require('../models/sale')
 
 module.exports = {
@@ -47,16 +47,16 @@ module.exports = {
         // Auto add user_id to req.body:
         req.body.user_id = req.user?._id                                //---> user_id'yi ayrıca göndermek istemiyorum. body'e user_id'yi  req.user?._id'den koy
 
-        // get stock info:
+        // güncel stok görüntüle:
         const currentProduct = await Product.findOne({ _id: req.body.product_id })
 
-        if (currentProduct.stock >= req.body.quantity) { // Check Limit
+        if (currentProduct.stock >= req.body.quantity) {                //---> Güncel stok satış yapılmak istenen adetten fazlaysa içeri gir
 
             // Create:
-            const data = await Sale.create(req.body)
+            const data = await Sale.create(req.body)                    //---> Stok yeterli geldi satışa başladım
 
-            // set stock (quantity) when Sale process:
-            const updateProduct = await Product.updateOne({ _id: data.product_id }, { $inc: { stock: -data.quantity } })
+            // satışla beraber stok güncelliyorum:
+            const updateProduct = await Product.updateOne({ _id: data.product_id }, { $inc: { stock: -data.quantity } })   //---> yaptım çünkü satış yaptım
 
             res.status(201).send({
                 error: false,
@@ -66,7 +66,7 @@ module.exports = {
         } else {
 
             res.errorStatusCode = 422
-            throw new Error('There is not enough stock for this sale.', { cause: { currentProduct } })
+            throw new Error('The current stock does not enough for requested quantity for sale.', { cause: { currentProduct } })
         }
     },
 
