@@ -2,6 +2,7 @@
 /* -------------------------------------------------------*/
 // Auth Controller:
 
+const jwt = require('jsonwebtoken')
 const User = require('../models/user')                                          //---> her Cont. bir modeli kullandığından Auth Cont'ı User modelini baz alıyor
 const Token = require('../models/token')
 const passwordEncrypt = require('../helpers/passwordEncrypt')
@@ -32,18 +33,24 @@ module.exports = {
             if (user && user.password == passwordEncrypt(password)) {           //---> kullanıcı geldi mi mu ve kullanıcının şifresi,  gelen şifreyle aynı mı? 
 
                 if (user.is_active) {
-
+                    
+                    //TOKEN
                     let tokenData = await Token.findOne({ user_id: user._id })  //---> user_id: user._id eşleşen user'ın token'ı var mı tokenData'ya ata
                     if (!tokenData) tokenData = await Token.create({            //---> daha önceden bir token yoksa
                         user_id: user._id,                                      //---> token oluşturacağın user._id bu user._id
                         token: passwordEncrypt(user._id + Date.now())           
                     })
 
+                    //JWT
+                    const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_KEY, { expiresIn: '30m' })
+                    const refreshToken = jwt.sign({ _id: user._id, password: user.password }, process.env.REFRESH_KEY, { expiresIn: '3d' })
+
                     res.send({
                         error: false,
-                        // token: tokenData.token,                              //---> normalde böle yazıyorken,
                         // FOR REACT PROJECT:
                         key: tokenData.token,                                   //---> FE. senkronu ile gidildiğinden key prop.i ile kullanıyorum
+                        // token: tokenData.token,                              //---> normalde böle yazıyorken,
+                        bearer: { accessToken, refreshToken },
                         user,
                     })
 
