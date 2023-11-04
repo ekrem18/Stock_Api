@@ -1,7 +1,5 @@
 "use strict"
-/* -------------------------------------------------------
-    NODEJS EXPRESS | CLARUSWAY FullStack Team
-------------------------------------------------------- */
+/* ------------------------------------------------------- */
 // node i nodemailer
 // sendMail(to:string, subject:string, message:string):
 
