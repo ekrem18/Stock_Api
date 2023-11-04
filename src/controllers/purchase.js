@@ -49,8 +49,9 @@ module.exports = {
 
         // Create:
         const data = await Purchase.create(req.body)
-
-        // set stock (quantity) when Purchase process:
+        // set stock (quantity) when Purchase process:  
+        //1) Purchase yaparken işlem body içerisinde bir product id gidiyor. onu seçiyorum. yularıda zaten dayaı oluşturdum create yaptım
+        //2) inc: aslında toplama işlemi. + da - de koyabilirim. product içindeki stock'u adet kadar arttır diyorum
         const updateProduct = await Product.updateOne({ _id: data.product_id }, { $inc: { stock: +data.quantity } })
 
         res.status(201).send({
