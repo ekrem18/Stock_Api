@@ -50,7 +50,7 @@ module.exports = {
         // güncel stok görüntüle:
         const currentProduct = await Product.findOne({ _id: req.body.product_id })
 
-        if (currentProduct.stock >= req.body.quantity) {                //---> Güncel stok satış yapılmak istenen adetten fazlaysa içeri gir
+        if (currentProduct.stock >= req.body.quantity) {                //---> Güncel stok satış yapılmak istenen adette veya fazlaysa içeri gir
 
             // Create:
             const data = await Sale.create(req.body)                    //---> Stok yeterli geldi satışa başladım
@@ -101,7 +101,7 @@ module.exports = {
             const currentSale = await Sale.findOne({ _id: req.params.id })
             // farka ulaşıyorum:
             const quantity = req.body.quantity - currentSale.quantity
-            // işlemle beraber stok güncelliyorum:
+            //Filtreleme alanımda ikinci parametre-koşul olarak, stok büyük veya eşittir "gte" diyorum        öyleyse    bu işlemi yap👇
             const updateProduct = await Product.updateOne({ _id: currentSale.product_id, stock: { $gte: quantity } }, { $inc: { stock: -quantity } })
             // console.log(updateProduct)
             
