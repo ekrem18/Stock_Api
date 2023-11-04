@@ -49,9 +49,10 @@ module.exports = {
 
         // Create:
         const data = await Purchase.create(req.body)
+
         // set stock (quantity) when Purchase process:  
         //1) Purchase yaparken işlem body içerisinde bir product id gidiyor. onu seçiyorum. yularıda zaten dayaı oluşturdum create yaptım
-        //2) inc: aslında toplama işlemi. + da - de koyabilirim. product içindeki stock'u adet kadar arttır diyorum
+        //2) inc: aslında toplama işlemi. + koymasam da olabilir.  - de koyabilirim mümkün. product içindeki stock'u adet kadar arttır diyorum
         const updateProduct = await Product.updateOne({ _id: data.product_id }, { $inc: { stock: +data.quantity } })
 
         res.status(201).send({
@@ -86,12 +87,12 @@ module.exports = {
             }
         */
 
-        if (req.body?.quantity) {
-            // get current stock quantity from the Purchase:
+        if (req.body?.quantity) {                                               //---> adet güncellemesi yapıyorsam
+            // güncellemeden önceki güncel stok burası
             const currentPurchase = await Purchase.findOne({ _id: req.params.id })
-            // different:
+            // güncellenecek veriyle eski adet arasındaki fark:
             const quantity = req.body.quantity - currentPurchase.quantity
-            // set stock (quantity) when Purchase process:
+            // çıkan sonuçlara göre de güncelleme yaptığım alan:
             const updateProduct = await Product.updateOne({ _id: currentPurchase.product_id }, { $inc: { stock: +quantity } })
         }
 
@@ -113,12 +114,12 @@ module.exports = {
 
         // get current stock quantity from the Purchase:
         const currentPurchase = await Purchase.findOne({ _id: req.params.id })
-        // console.log(currentPurchase)
+      
 
         // Delete:
         const data = await Purchase.deleteOne({ _id: req.params.id })
 
-        // set stock (quantity) when Purchase process:
+        // set stock (quantity) when Purchase:
         const updateProduct = await Product.updateOne({ _id: currentPurchase.product_id }, { $inc: { stock: -currentPurchase.quantity } })
 
         res.status(data.deletedCount ? 204 : 404).send({
