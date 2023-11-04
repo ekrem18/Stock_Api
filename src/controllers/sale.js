@@ -97,16 +97,15 @@ module.exports = {
         */
 
         if (req.body?.quantity) {
-            // get current stock quantity from the Sale:
+            // varsa adetle beraber güncel stoğa ulaşıyorum:
             const currentSale = await Sale.findOne({ _id: req.params.id })
-            // different:
+            // farka ulaşıyorum:
             const quantity = req.body.quantity - currentSale.quantity
-            // console.log(quantity)
-            // set stock (quantity) when Sale process:
+            // işlemle beraber stok güncelliyorum:
             const updateProduct = await Product.updateOne({ _id: currentSale.product_id, stock: { $gte: quantity } }, { $inc: { stock: -quantity } })
             // console.log(updateProduct)
             
-            // if stock limit not enough:
+            // stok yeterli değilse:
             if (updateProduct.modifiedCount == 0) { // Check Limit
                 res.errorStatusCode = 422
                 throw new Error('There is not enough stock for this sale.')
@@ -133,10 +132,10 @@ module.exports = {
         const currentSale = await Sale.findOne({ _id: req.params.id })
         // console.log(currentSale)
 
-        // Delete:
+        // satış iptal/silme:
         const data = await Sale.deleteOne({ _id: req.params.id })
 
-        // set stock (quantity) when Sale process:
+        // set stock (quantity) when Sale process:                                    //aşağıyı artı yapmamın sebebi satış silindiğinde/İPTAL olduğunda stok artar
         const updateProduct = await Product.updateOne({ _id: currentSale.product_id }, { $inc: { stock: +currentSale.quantity } })
 
         res.status(data.deletedCount ? 204 : 404).send({
